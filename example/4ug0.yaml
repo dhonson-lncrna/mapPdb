@@ -1,0 +1,26 @@
+shared_params: &common_params
+    pdbid: '4ug0'
+
+align_pdb:
+    <<: *common_params
+    gen_fasta: 'example/hg38_ncRNA.fa'
+    keep: ['28S','18S']
+    rdict:
+        '28S-ribosomal-RNA': 'pdb_28S'
+        '18S-ribosomal-RNA': 'pdb_18S'
+
+bedtocmap:
+    <<: *common_params
+    rna_info: 
+        '28S': ['/L5','#FFF5E6']
+        '18S': ['/S2','#E7EDF3']
+    protein_info: [['RPL14','/LM','#D55C3E','28S'],
+                   ['RPL23','/LV','#B16548','28S'],
+                   ['RPL36','/Li','#CD6A00','28S'],
+                   ['RPS5','/SF','#571F4E','18S'],
+                   ['RPS19','/ST','#C45E9D','18S'],
+                   ['RPS25','/SZ','#3D9CB2','18S']]
+    spidrpath: 'example/exampleTidyBedgraph.csv'
+    floor: 2
+    # Set binsize to None or delete if no binning desired
+    binsize: 5

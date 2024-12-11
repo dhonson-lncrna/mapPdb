@@ -1,0 +1,54 @@
+shared_params: &common_params
+    pdbid: '3j7q' # : str
+        # The PDB ID of the desired structure
+
+align_pdb:
+    <<: *common_params
+    gen_fasta: 'example/hg38_ncRNA.fa' # : str
+        # Path to the genomic FASTA file used for alignment
+    keep: ['28S',] # : list
+        # The name(s) of the RNA(s) which will be colored according to 
+        # sequencing data. These names should be taken from the genomic
+        # FASTA file used for alignment
+    rdict: # : dict
+        # A dictionary to change naming conventions. Keys should be the 
+        # RNA name in the PDB FASTA file. Values should be 
+        # "pdb_[name in keep]"
+        '28S-ribosomal-RNA': 'pdb_28S' 
+        
+bedtocmap:
+    <<: *common_params
+    rna_info: # : dict
+        # A dictionary to color chains. Keys should be the RNA(s) in 
+        # "keep". Values should be a two item list:
+        #    Item 0:  the chain ID of the RNA in the PDB structure
+        # 
+        #    Item 1 : the hex code to use as the most saturated color 
+        #             desired for the RNA
+        
+        '28S': ['/5','#FFF5E6'] 
+    protein_info: [['BTF3','/notPresent','#D55C3E','28S'],
+                   ['SEC61A','/1','#4E5744','28S'],
+                   ['SEC61G','/2','#19270D','28S'],
+                   ['SEC61B','/3','#CD6A00','28S']]
+        # : list
+        # A list of four item lists. 
+        #   Item 0: The name of the protein target as listed in the 
+        #           final column of the tidy bedgraph. If a protein 
+        #           should be shown in the structure that is not in 
+        #           the bedgraph, use any informative name.
+        #   Item 1: The chain ID of the protein in the PDB structure
+        #   Item 2: The hex code of the desired color of the protein
+        #   Item 3: The RNA to be colored for each target, as named in 
+        #           "keep". If the protein is not in the bedgraph, use
+        #           an arbitrary value from "keep". 
+        
+    spidrpath: 'data/tidyBedgraphFixedDedupPlusMito.csv' # : str
+        # Path to a tidy bedgraph of the RNA sequencing data
+    floor: 2 # : int or float
+        # Minimum enrichment value in the tidy bedgraph to be 
+        # shown on structures
+    binsize: 5 # : int
+        # RNA binsize in nucleotides to be visualized on structure.
+        # Color will be assigned for the maximum enrichment value 
+        # in each bin.
